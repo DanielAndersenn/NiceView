@@ -10,5 +10,5 @@ package services;
  * @author Daniel
  */
 public class HotelDTO {
-    
+    //supsfqopwjopfqpowgjpwqpofq
 }
