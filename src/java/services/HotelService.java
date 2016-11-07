@@ -23,15 +23,8 @@ public interface HotelService {
     @WebMethod
     public String bookHotel(int bookNr, String ccInfo);
     
-    @WebMethod String cancelHotel(int bookNr);
-    
-    /*
-    
-    @WebMethod(operationName = "test")
-    public String test() {
-        return "Test";
-    }
-    */
+    @WebMethod 
+    public String cancelHotel(int bookNr);
 
     
 }

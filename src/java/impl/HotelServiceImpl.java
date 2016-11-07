@@ -5,9 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.faces.application.ProjectStage;
 import javax.jws.WebService;
 import services.HotelService;
 /**
@@ -22,7 +19,6 @@ public class HotelServiceImpl implements HotelService{
     public HotelServiceImpl () {
         GenerateHotels();
         System.out.println(hotels.get(2).toString());
-        //Logger.getLogger(HotelServiceImpl.class.getName()).log(Level.SEVERE, null, hotels.get(2).toString());
     }
     
     @Override
