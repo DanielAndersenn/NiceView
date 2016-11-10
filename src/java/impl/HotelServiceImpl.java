@@ -1,6 +1,8 @@
 package impl;
 
 import dto.HotelDTO;
+import exceptions.BookingException;
+import exceptions.CheckBeanFault;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,18 +21,30 @@ public class HotelServiceImpl implements HotelService{
     
     public HotelServiceImpl () {
         GenerateHotels();
-        System.out.println(hotels.get(2).toString());
     }
     
     @Override
     public HotelDTO[] getHotels(String city, Date arrDate, Date depDate) {
+        
         Set<Integer> ids = hotels.keySet();
-        HotelDTO[] h = new HotelDTO[ids.size()];
+        
+        int arraySize = 0;
+        for(Integer id : ids) {
+           if(hotels.get(id).getCity().equals(city)) arraySize++; 
+        }
+        System.out.println("Arraysize: " + arraySize);
+        HotelDTO[] h = new HotelDTO[arraySize];
         
         int i = 0;
         for(Integer id : ids) {
-            h[i] = hotels.get(id);
-            i++;
+            System.out.println("Byer: " + hotels.get(id).getCity() + "Input param city: " + city);
+            System.out.println("Hvad så mand?" + hotels.get(id).getCity().equals(city));
+            if(hotels.get(id).getCity().equals(city)) 
+            {
+                h[i] = hotels.get(id);
+                i++;
+            }
+            
         }
         
         return h;
@@ -38,8 +52,17 @@ public class HotelServiceImpl implements HotelService{
     }
 
     @Override
-    public String bookHotel(int HotelNr, String ccInfo) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public String bookHotel(int bookNr, String ccInfo) throws BookingException{
+        if(bookNr == 1) {
+            CheckBeanFault fault = new CheckBeanFault(); 
+            fault.setFaultCode("54321");
+            fault.setFaultString("Hey homie ######");
+            throw new BookingException("12345", fault);    
+        } else {
+            return "lol";
+        }
+        
+        
     }
 
     @Override
@@ -68,6 +91,14 @@ public class HotelServiceImpl implements HotelService{
     
     hotels.put(h2.getBooknr(), h2);
     
+    HotelDTO h3 = new HotelDTO( "Marriott",
+                                "Copenhagen",
+                                 "Bryggen 37",
+                                3,
+                                true,
+                                500);
+    
+    hotels.put(h3.getBooknr(), h3);
     
 }
     

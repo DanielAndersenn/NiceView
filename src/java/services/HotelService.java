@@ -5,10 +5,12 @@
  */
 package services;
 
+import exceptions.BookingException;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
 import dto.HotelDTO;
 import java.util.Date;
+import javax.jws.WebParam;
 
 /**
  *
@@ -18,10 +20,10 @@ import java.util.Date;
 public interface HotelService {
     
     @WebMethod
-    public HotelDTO[] getHotels(String city, Date arrDate, Date depDate);
+    public HotelDTO[] getHotels(@WebParam(name="city") String city, @WebParam(name="arrDate")Date arrDate, @WebParam(name="depDate")Date depDate);
     
     @WebMethod
-    public String bookHotel(int bookNr, String ccInfo);
+    public String bookHotel(@WebParam(name="bookNr") int bookNr, @WebParam(name="ccInfo")String ccInfo) throws BookingException;
     
     @WebMethod 
     public String cancelHotel(int bookNr);
