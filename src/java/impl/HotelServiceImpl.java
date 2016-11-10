@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 import javax.jws.WebService;
 import services.HotelService;
 /**
@@ -70,4 +71,8 @@ public class HotelServiceImpl implements HotelService{
     
 }
     
+    private long getNights(Date arrDate, Date depDate){
+       long diff = depDate.getTime() - arrDate.getTime();
+       return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+    }
 }
