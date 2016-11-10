@@ -80,7 +80,6 @@ public class HotelDTO implements Serializable{
         this.dayPrice = dayPrice;
     }
     
-    @Override
     public String toString() {
         return "HotelDTO{" + "name=" + name + ", city=" + city + ", address=" + address + ", booknr=" + booknr + ", guarantee=" + guarantee + ", dayPrice=" + dayPrice + '}';
     }
