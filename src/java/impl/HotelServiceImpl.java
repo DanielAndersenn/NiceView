@@ -1,5 +1,7 @@
 package impl;
 
+import FastMoney.BankService;
+import FastMoney.CreditCardFaultMessage;
 import dto.HotelDTO;
 import exceptions.BookingException;
 import exceptions.CheckBeanFault;
@@ -9,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import javax.jws.WebService;
+import javax.xml.ws.WebServiceRef;
 import services.HotelService;
 /**
  *
@@ -16,6 +19,8 @@ import services.HotelService;
  */
 @WebService(endpointInterface = "services.HotelService")
 public class HotelServiceImpl implements HotelService{
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/fastmoney.imm.dtu.dk_8080/BankService.wsdl")
+    private BankService service;
     
     private static Map<Integer, HotelDTO> hotels = new HashMap<Integer, HotelDTO>();
     
@@ -104,6 +109,9 @@ public class HotelServiceImpl implements HotelService{
     
     private long getNights(Date arrDate, Date depDate){
        long diff = depDate.getTime() - arrDate.getTime();
+       
+       int price = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
        return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
+
 }
