@@ -28,20 +28,27 @@ public class HotelServiceImpl implements HotelService{
         
         Set<Integer> ids = hotels.keySet();
         
+        int price;
+        
+        
+        
         int arraySize = 0;
         for(Integer id : ids) {
            if(hotels.get(id).getCity().equals(city)) arraySize++; 
         }
-        System.out.println("Arraysize: " + arraySize);
+        //System.out.println("Arraysize: " + arraySize);
         HotelDTO[] h = new HotelDTO[arraySize];
         
         int i = 0;
         for(Integer id : ids) {
-            System.out.println("Byer: " + hotels.get(id).getCity() + "Input param city: " + city);
-            System.out.println("Hvad så mand?" + hotels.get(id).getCity().equals(city));
+            //System.out.println("Byer: " + hotels.get(id).getCity() + "Input param city: " + city);
+            //System.out.println("Hvad så mand?" + hotels.get(id).getCity().equals(city));
             if(hotels.get(id).getCity().equals(city)) 
             {
-                h[i] = hotels.get(id);
+                
+                h[i] = new HotelDTO(hotels.get(id));
+                price = getNights(arrDate, depDate) * hotels.get(id).getPrice();
+                h[i].setPrice(price);
                 i++;
             }
             
@@ -102,8 +109,11 @@ public class HotelServiceImpl implements HotelService{
     
 }
     
-    private long getNights(Date arrDate, Date depDate){
+    private int getNights(Date arrDate, Date depDate){
+       int toReturn;
        long diff = depDate.getTime() - arrDate.getTime();
-       return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+       toReturn = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+        System.out.println("Value of int toReturn: " + toReturn);
+       return toReturn;
     }
 }
