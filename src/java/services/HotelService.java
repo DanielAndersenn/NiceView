@@ -5,6 +5,7 @@
  */
 package services;
 
+import FastMoney.CreditCardInfoType;
 import exceptions.BookingException;
 import javax.jws.WebService;
 import javax.jws.WebMethod;
@@ -23,10 +24,10 @@ public interface HotelService {
     public HotelDTO[] getHotels(@WebParam(name="city") String city, @WebParam(name="arrDate")Date arrDate, @WebParam(name="depDate")Date depDate);
     
     @WebMethod
-    public String bookHotel(@WebParam(name="bookNr") int bookNr, @WebParam(name="ccInfo")String ccInfo) throws BookingException;
-    
+    public boolean bookHotel(@WebParam(name="bookNr") int bookNr, @WebParam(name="ccInfo")CreditCardInfoType ccInfo) throws BookingException;
+            
     @WebMethod 
-    public String cancelHotel(int bookNr);
+    public void cancelHotel(int bookNr) throws BookingException;
 
     
 }

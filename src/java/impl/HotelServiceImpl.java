@@ -2,6 +2,7 @@ package impl;
 
 import FastMoney.BankService;
 import FastMoney.CreditCardFaultMessage;
+import FastMoney.CreditCardInfoType;
 import dto.HotelDTO;
 import exceptions.BookingException;
 import exceptions.CheckBeanFault;
@@ -10,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.jws.WebService;
 import javax.xml.ws.WebServiceRef;
 import services.HotelService;
@@ -22,7 +25,8 @@ public class HotelServiceImpl implements HotelService{
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/fastmoney.imm.dtu.dk_8080/BankService.wsdl")
     private BankService service;
     
-    private static Map<Integer, HotelDTO> hotels = new HashMap<Integer, HotelDTO>();
+    private static Map<Integer, HotelDTO> hotels = new HashMap<>();
+    HotelDTO[] h;
     
     public HotelServiceImpl () {
         GenerateHotels();
@@ -34,15 +38,13 @@ public class HotelServiceImpl implements HotelService{
         Set<Integer> ids = hotels.keySet();
         
         int price;
-        
-        
-        
+           
         int arraySize = 0;
         for(Integer id : ids) {
            if(hotels.get(id).getCity().equals(city)) arraySize++; 
         }
         //System.out.println("Arraysize: " + arraySize);
-        HotelDTO[] h = new HotelDTO[arraySize];
+        h = new HotelDTO[arraySize];
         
         int i = 0;
         for(Integer id : ids) {
@@ -64,22 +66,40 @@ public class HotelServiceImpl implements HotelService{
     }
 
     @Override
-    public String bookHotel(int bookNr, String ccInfo) throws BookingException{
-        if(bookNr == 1) {
-            CheckBeanFault fault = new CheckBeanFault(); 
-            fault.setFaultCode("54321");
-            fault.setFaultString("Hey homie ######");
-            throw new BookingException("12345", fault);    
-        } else {
-            return "lol";
-        }
+    public boolean bookHotel(int bookNr, CreditCardInfoType ccInfo) throws BookingException{
         
+        int amount = 0;
+        if(ccInfo == null) {
+            return true;
+        } else {
+            System.out.println("Value of ccInfo | Name: " + ccInfo.getName() + " | Nr: " + ccInfo.getNumber() + " | xpDate: " + ccInfo.getExpirationDate().getMonth() + ccInfo.getExpirationDate().getYear());
+            for(int i = 0; i < h.length; i++) {
+                if(h[i].getBooknr() == bookNr) {
+                    amount = h[i].getPrice();
+                    System.out.println("Value of amount: " + amount);
+                    break;
+                }
+            }
+            
+            try {
+                    validateCreditCard(15, ccInfo, 1001);
+                    System.out.println("Value of validateCC() " + validateCreditCard(15, ccInfo, amount));
+                    return true;
+            } catch (CreditCardFaultMessage ex) {
+                CheckBeanFault fault = new CheckBeanFault();
+                fault.setFaultCode("");
+                fault.setFaultString(ex.getFaultInfo().getMessage());
+                throw new BookingException(ex.getMessage(), fault);
+            }    
+   
+        } 
         
     }
 
     @Override
-    public String cancelHotel(int bookNr) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void cancelHotel(int bookNr) throws BookingException {
+        if(bookNr == 1) return;
+        if(bookNr != 1) throw new BookingException("Cancellation failed because reasons", new CheckBeanFault());
     }
     
     
@@ -120,9 +140,13 @@ public class HotelServiceImpl implements HotelService{
        toReturn = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
         System.out.println("Value of int toReturn: " + toReturn);
        return toReturn;
-       
-       int price = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-       return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+
+    }
+
+    private boolean validateCreditCard(int group, CreditCardInfoType creditCardInfo, int amount) throws CreditCardFaultMessage {
+    
+        FastMoney.BankPortType port = service.getBankPort();
+        return port.validateCreditCard(group, creditCardInfo, amount);
     }
 
 }

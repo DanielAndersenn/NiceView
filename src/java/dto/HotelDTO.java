@@ -15,12 +15,13 @@ public class HotelDTO implements Serializable{
     
     private static final long serialVersionUID = -5577579081118070434L;
     
-    String name;
-    String city;
-    String address;
-    int booknr;
-    boolean guarantee;
-    int price;
+    private String name;
+    private String city;
+    private String address;
+    private int booknr;
+    private boolean guarantee;
+    private boolean booked; 
+    private int price;
     
     public HotelDTO(String name, String city, String address, int booknr, boolean guarantee, int price) {
         this.name = name;
@@ -82,6 +83,14 @@ public class HotelDTO implements Serializable{
 
     public void setPrice(int dayPrice) {
         this.price = dayPrice;
+    }
+
+    public boolean isBooked() {
+        return booked;
+    }
+
+    public void setBooked(boolean booked) {
+        this.booked = booked;
     }
     
     public String toString() {
