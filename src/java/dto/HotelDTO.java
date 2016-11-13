@@ -20,16 +20,20 @@ public class HotelDTO implements Serializable{
     String address;
     int booknr;
     boolean guarantee;
-    int dayPrice;
+    int price;
     
-    public HotelDTO(String name, String city, String address, int booknr, boolean guarantee, int dayPrice) {
+    public HotelDTO(String name, String city, String address, int booknr, boolean guarantee, int price) {
         this.name = name;
         this.city = city;
         this.address = address;
         this.booknr = booknr;
         this.guarantee = guarantee;
-        this.dayPrice = dayPrice;
+        this.price = price;
       
+    }
+    
+    public HotelDTO(HotelDTO hotel) {
+        this(hotel.getName(), hotel.getCity(), hotel.getAddress(), hotel.getBooknr(), hotel.isGuarantee(), hotel.getPrice());
     }
 
     public String getName() {
@@ -72,16 +76,16 @@ public class HotelDTO implements Serializable{
         this.guarantee = guarantee;
     }
 
-    public int getDayPrice() {
-        return dayPrice;
+    public int getPrice() {
+        return price;
     }
 
-    public void setDayPrice(int dayPrice) {
-        this.dayPrice = dayPrice;
+    public void setPrice(int dayPrice) {
+        this.price = dayPrice;
     }
     
     public String toString() {
-        return "HotelDTO{" + "name=" + name + ", city=" + city + ", address=" + address + ", booknr=" + booknr + ", guarantee=" + guarantee + ", dayPrice=" + dayPrice + '}';
+        return "HotelDTO{" + "name=" + name + ", city=" + city + ", address=" + address + ", booknr=" + booknr + ", guarantee=" + guarantee + ", Price=" + price + '}';
     }
     
 }
