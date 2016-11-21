@@ -6,37 +6,42 @@
 package dto;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  *
- * @author Daniel
+ * @author mathi
  */
-public class HotelDTO implements Serializable{
-    
-    private static final long serialVersionUID = -5577579081118070434L;
+public class HotelDTO implements Serializable {
     
     private String name;
     private String city;
     private String address;
-    private int booknr;
+    private int hotelnr;
     private boolean guarantee;
-    private boolean booked; 
     private int price;
+    private boolean BookedRooms[] = new boolean[10];
     
-    public HotelDTO(String name, String city, String address, int booknr, boolean guarantee, int price) {
+    public HotelDTO(String name, String city, String address, int hotelnr, boolean guarantee, int price) {
         this.name = name;
         this.city = city;
         this.address = address;
-        this.booknr = booknr;
+        this.hotelnr = hotelnr;
         this.guarantee = guarantee;
         this.price = price;
-      
+        Arrays.fill(BookedRooms, false);
     }
     
-    public HotelDTO(HotelDTO hotel) {
-        this(hotel.getName(), hotel.getCity(), hotel.getAddress(), hotel.getBooknr(), hotel.isGuarantee(), hotel.getPrice());
+    @Override
+    public String toString() {
+        return "HotelDTO{" + "name=" + name + ", city=" + city + ", address=" + address + ", hotelnr=" + hotelnr + ", guarantee=" + guarantee + ", Price=" + price + '}';
     }
 
+     public HotelDTO(HotelDTO hotel) {
+        this(hotel.getName(), hotel.getCity(), hotel.getAddress(), hotel.getHotelnr(), hotel.isGuarantee(), hotel.getPrice());
+        this.BookedRooms = hotel.getBookedRooms();
+     }
+    
     public String getName() {
         return name;
     }
@@ -61,12 +66,12 @@ public class HotelDTO implements Serializable{
         this.address = address;
     }
 
-    public int getBooknr() {
-        return booknr;
+    public int getHotelnr() {
+        return hotelnr;
     }
 
-    public void setBooknr(int booknr) {
-        this.booknr = booknr;
+    public void setHotelnr(int hotelnr) {
+        this.hotelnr = hotelnr;
     }
 
     public boolean isGuarantee() {
@@ -81,20 +86,24 @@ public class HotelDTO implements Serializable{
         return price;
     }
 
-    public void setPrice(int dayPrice) {
-        this.price = dayPrice;
+    public void setPrice(int price) {
+        this.price = price;
     }
 
-    public boolean isBooked() {
-        return booked;
+    public boolean[] getBookedRooms() {
+        return BookedRooms;
     }
 
-    public void setBooked(boolean booked) {
-        this.booked = booked;
+    public boolean setBookedRooms(boolean book, int room) {
+       
+        if(BookedRooms[room] == book){
+            return false;
+        } else {
+        BookedRooms[room] = book;
+        return true;
+        }
+        
     }
     
-    public String toString() {
-        return "HotelDTO{" + "name=" + name + ", city=" + city + ", address=" + address + ", booknr=" + booknr + ", guarantee=" + guarantee + ", Price=" + price + '}';
-    }
     
 }

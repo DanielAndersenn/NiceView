@@ -24,10 +24,10 @@ public interface HotelService {
     public HotelDTO[] getHotels(@WebParam(name="city") String city, @WebParam(name="arrDate")Date arrDate, @WebParam(name="depDate")Date depDate);
     
     @WebMethod
-    public boolean bookHotel(@WebParam(name="bookNr") int bookNr, @WebParam(name="ccInfo")CreditCardInfoType ccInfo) throws BookingException;
+    public boolean bookHotel(@WebParam(name="bookNr") String bookNr, @WebParam(name="ccInfo")CreditCardInfoType ccInfo) throws BookingException;
             
     @WebMethod 
-    public void cancelHotel(int bookNr) throws BookingException;
+    public boolean cancelHotel(String bookNr) throws BookingException;
 
     
 }
